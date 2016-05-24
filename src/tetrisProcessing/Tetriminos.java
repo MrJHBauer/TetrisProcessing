@@ -1,29 +1,31 @@
 package tetrisProcessing;
 
+import java.util.ArrayList;
+
 public enum Tetriminos {
-	I(Colour.BLUE, new int[][]{{1}, {1}, {1}, {1}}),
-	L(Colour.GREEN, new int[][]{{1, 0}, {1, 0}, {1, 1}}),
-	T(Colour.PURPLE, new int[][]{{1, 1, 1}, {0, 1, 0}}),
-	J(Colour.GREEN, new int[][]{{0, 1}, {0, 1}, {1, 1}}),
-	O(Colour.YELLOW, new int[][]{{1, 1}, {1, 1}}),
-	Z(Colour.RED, new int[][]{{1, 1, 0}, {0, 1, 1}}),
-	S(Colour.RED, new int[][]{{0, 1, 1}, {1, 1, 0}});
+	I(Colour.BLUE, TetriminoStates.I),
+	L(Colour.GREEN, TetriminoStates.L),
+	T(Colour.PURPLE, TetriminoStates.T),
+	J(Colour.GREEN, TetriminoStates.J),
+	O(Colour.YELLOW, TetriminoStates.O),
+	Z(Colour.RED,TetriminoStates.Z),
+	S(Colour.RED, TetriminoStates.S);
 	
 	private Colour colour;
-		
-	private int[][] data;
 	
-	Tetriminos(Colour colour, int[][] data) {
+	private TetriminoStates states;
+	
+	Tetriminos(Colour colour, TetriminoStates states) {
 		this.colour = colour;
-		this.data = data;
+		this.states = states;
 	}
 	
 	public Colour getColour() {
 		return colour;
 	}
 	
-	public int[][] getData() {
-		return data;
+	public ArrayList<int[][]> getStates() {
+		return states.getStates();
 	}
 	
 }

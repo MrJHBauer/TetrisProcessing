@@ -36,6 +36,8 @@ public class Game extends PApplet {
 	boolean hasLanded = false;
 	int ticks = 0;
 	
+	boolean isRowComplete = false;
+	
 	public void settings() {
 		size(672, 736);
 	}
@@ -57,9 +59,9 @@ public class Game extends PApplet {
 		if(ticks > 50) {
 			if(tetrimino != null) {
 				tetrimino.y += 32;
-				for(int i = 0; i < tetrimino.data.length; i++) {
-					for(int j = 0; j < tetrimino.data[i].length; j++) {
-						if(tetrimino.data[i][j] != 0) {
+				for(int i = 0; i < tetrimino.currentState.length; i++) {
+					for(int j = 0; j < tetrimino.currentState[i].length; j++) {
+						if(tetrimino.currentState[i][j] != 0) {
 							int tetriminoX = tetrimino.x + 32 * j;
 							int tetriminoY = tetrimino.y + 32 * i;
 							for(int row = 0; row < staticBlocks.length; row++) {
@@ -68,9 +70,9 @@ public class Game extends PApplet {
 										int staticX = 32 * col;
 										int staticY = 32 * row;
 										if(staticX == tetriminoX && staticY - 32 == tetriminoY) {
-											for(int k = 0; k < tetrimino.data.length; k++) {
-												for(int l = 0; l < tetrimino.data[k].length; l++) {
-													if(tetrimino.data[k][l] != 0) {
+											for(int k = 0; k < tetrimino.currentState.length; k++) {
+												for(int l = 0; l < tetrimino.currentState[k].length; l++) {
+													if(tetrimino.currentState[k][l] != 0) {
 														staticBlocks[(tetrimino.y - 32) / 32 + k + 1][(tetrimino.x - 32) / 32 + l + 1] = tetrimino.type.getColour().ordinal() + 1;
 													}
 												}
@@ -87,6 +89,23 @@ public class Game extends PApplet {
 			} else {			
 				tetrimino = new Tetrimino(128, 96, blocks, Tetriminos.values()[(int)random(0, Tetriminos.values().length)], this);
 				hasLanded = false;
+				for(int i = 0; i < staticBlocks.length - 1; i++) {
+					for(int j = 1; j <= 10; j++) {
+						if(staticBlocks[i][j] != 0) {
+							isRowComplete = true;
+						} else {
+							isRowComplete = false;
+							break;
+						}
+					}
+					if(isRowComplete) {
+						for(int col = 1; col <= 10; col++) {
+							staticBlocks[i][col] = 0;
+						}
+						isRowComplete = false;
+					}
+				}
+				
 			}
 			ticks = 0;
 		}		
